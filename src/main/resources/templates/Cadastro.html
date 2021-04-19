@@ -12,11 +12,9 @@
 
 <section layout:fragment="conteudo">	
 	
-	<form class="form-horizontal" method="POST" action="/titulos">
+	<form class="form-horizontal" method="POST" action="/titulos" th:object="${titulo}">
 	
-	    <div class="alert alert-success" th:if=${!#strings.isEmpty(mensagem)}>			
-			<span th:text="${mensagem}">Título salvo!</span>		
-		</div>
+		<div th:replace="Mensagem"></div>	   
 		
 		<div class="card card-default">
 			<div class="card-heading">
@@ -43,7 +41,7 @@
 				</div>				
 			</div>
 			
-			<div class="form-group">	
+			<div class="form-group" th:classappend="${#fields.hasErrors('valor')} ? has-error">	
 				<label for="valor" class="col-sm-2 control-label">Valor</label>
 				<div class="col-sm-2">
 					<input type="text" class="form-control" id="valor" name="valor"/>
