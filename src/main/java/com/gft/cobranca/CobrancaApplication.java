@@ -18,6 +18,5 @@ public class CobrancaApplication {
 	public FixedLocaleResolver localeResolver() {
 		return new FixedLocaleResolver(new Locale("pt", "BR"));		
 	}
-	
 
 }
