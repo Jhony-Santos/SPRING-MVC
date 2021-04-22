@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.gft.cobranca.model.StatusTitulo;
 import com.gft.cobranca.model.Titulo;
 import com.gft.cobranca.repository.Titulos;
+import com.gft.cobranca.repository.filter.TituloFilter;
 import com.gft.cobranca.service.CadastroTituloService;
 
 @Controller
@@ -57,13 +59,13 @@ public class TituloController {
 		}catch(IllegalArgumentException e) {
 			errors.rejectValue("dataVencimento", null, e.getMessage());	
 			return CADASTRO_VIEW;
-		}	
-					
+		}						
 	}
 	
 	@RequestMapping
-	public ModelAndView pesquisar() {
-		List<Titulo> todosTitulos=titulos.findAll();
+	public ModelAndView pesquisar(@ModelAttribute("filtro") TituloFilter filtro) {
+		
+		List<Titulo> todosTitulos=cadastroTituloService.filtrar(filtro);		
 		ModelAndView mv = new ModelAndView("PesquisaTitulos");
 		mv.addObject("titulos", todosTitulos);
 		return mv;
@@ -87,10 +89,8 @@ public class TituloController {
 	}
 	@RequestMapping(value="/{codigo}/receber", method=RequestMethod.PUT)
 		public @ResponseBody String receber(@PathVariable Long codigo) {			
-			return cadastroTituloService.receber(codigo);
-		
-	}		
-	
+			return cadastroTituloService.receber(codigo);		
+	}			
 	
 	@ModelAttribute("todosStatusTitulo")
 	public List<StatusTitulo> todosStatusTitulo(){
